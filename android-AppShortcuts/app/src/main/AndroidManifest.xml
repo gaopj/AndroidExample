@@ -33,6 +33,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!--
+                MainActivity，即设置了action为<action android:name=”android.intent.action.MAIN” />，
+                且category设置为 <category android:name=”android.intent.category.LAUNCHER” />的activity；
+                为其添加<meta-data>….</meta-data>指向定义Shortcuts的资源文件。
+            -->
             <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
         </activity>
         <receiver android:name="com.example.android.appshortcuts.MyReceiver">

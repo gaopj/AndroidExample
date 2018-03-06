@@ -13,6 +13,25 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
+
+<!--
+    Static Shortcuts 静态配置shortcuts，类似BroadcastReceiver静态注册
+    一个shortcuts标签中可以配置多个shortcut
+    shortcutId ：shortcut唯一标识符，相同的shortcutId会被覆盖。（必设属性）
+    enable：shortcut是否启用，true启用，false是禁用（若设置为false，不如删除掉该快捷方式）（可选属性）
+    icon：显示在快捷方式左边的图标。（可选属性）
+    shortcutShortLabel : shortcut的简要说明，这项是必须的。（必设属性）
+    shortcutLongLabel：当launcher的空间足够时将会显示shortcut的长文本描述，不宜过长，
+            如果过长或未设置时会显示shortcutShortLabel （可选属性）
+    intent : 这里定义快捷方式被点击之后将会打开的intent （必设属性）
+            当有多个intents与之相关联时，在用户启动该shortcut时，最先呈现给用户的是
+            <intent>...</intent>集合中最后一个intent操作事件。
+            即这里创建了一个intent的回退栈，最后一个才是被快捷方式打开的那个。
+    shortcutDisabledMessage : 当你禁用了shortcut之后，它将不会显示在用户长按应用图标后打开的快捷方式里，
+            但是用户可以把一个快捷方式拖拽到launcher的某个页面成为Pinned Shortcut，
+            被禁用之后这个快捷方式就会显示为灰色，
+            点击这个Pinned Shortcut则会显示一个内容为shortcutDisabledMessage的Toast。(可选属性)
+-->
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android" >
     <shortcut
         android:shortcutId="add_website"

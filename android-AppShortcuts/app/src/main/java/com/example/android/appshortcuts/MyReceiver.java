@@ -26,6 +26,7 @@ public class MyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.i(TAG, "onReceive: " + intent);
+        //设备当前区域设置已更改时发出的广播
         if (Intent.ACTION_LOCALE_CHANGED.equals(intent.getAction())) {
             // Refresh all shortcut to update the labels.
             // (Right now shortcut labels don't contain localized strings though.)

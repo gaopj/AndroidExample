@@ -59,6 +59,7 @@ public class Main extends ListActivity implements OnClickListener {
 
         mHelper.refreshShortcuts(/*force=*/ false);
 
+        //从静态shortcuts 传来的intent
         if (ACTION_ADD_WEBSITE.equals(getIntent().getAction())) {
             // Invoked via the manifest shortcut.
             addWebSite();
@@ -89,7 +90,7 @@ public class Main extends ListActivity implements OnClickListener {
 
         final EditText editUri = new EditText(this);
 
-        editUri.setHint("http://www.android.com/");
+        editUri.setHint("http://www.baidu.com/");
         editUri.setInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
 
         new AlertDialog.Builder(this)
@@ -105,6 +106,7 @@ public class Main extends ListActivity implements OnClickListener {
                 .show();
     }
 
+    //开一个线程去处理增加一个shortcut
     private void addUriAsync(String uri) {
         new AsyncTask<Void, Void, Void>() {
             @Override
