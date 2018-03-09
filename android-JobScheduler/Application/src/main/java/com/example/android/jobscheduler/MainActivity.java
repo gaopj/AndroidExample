@@ -49,6 +49,9 @@ import java.util.List;
  * <p>
  * {@link MyJobService} can send messages to this via a {@link Messenger}
  * that is sent in the Intent that starts the Service.
+ *
+ *This is an API for scheduling various types of jobs against the framework that will be executed in your application's own process.
+ *JobSchedule：在你自己应用程序进程中对各种类型作业进行调度。
  */
 public class MainActivity extends Activity {
 
@@ -120,28 +123,38 @@ public class MainActivity extends Activity {
     /**
      * Executed when user clicks on SCHEDULE JOB.
      */
+
+    // 使用Context.getSystemService(Context.JOB_SCHEDULER_SERVICE)去创建JobScheduler对象。
+    // 然后使用JobInfo.Builder去配置JobScheduler调度工作的参数
     public void scheduleJob(View v) {
         JobInfo.Builder builder = new JobInfo.Builder(mJobId++, mServiceComponent);
 
         String delay = mDelayEditText.getText().toString();
         if (!TextUtils.isEmpty(delay)) {
+            // setMinimumLatency 设置作业延迟执行的时间，与setPeriodic不可同时执行
             builder.setMinimumLatency(Long.valueOf(delay) * 1000);
         }
         String deadline = mDeadlineEditText.getText().toString();
         if (!TextUtils.isEmpty(deadline)) {
+            // setOverrideDeadline 设置作业最大延迟执行时间
             builder.setOverrideDeadline(Long.valueOf(deadline) * 1000);
         }
         boolean requiresUnmetered = mWiFiConnectivityRadioButton.isChecked();
         boolean requiresAnyConnectivity = mAnyConnectivityRadioButton.isChecked();
+        // setRequiredNetworkType 设置作业只有在满足指定的网络条件时才会被执行
         if (requiresUnmetered) {
             builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED);
         } else if (requiresAnyConnectivity) {
             builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
         }
+
+        //setRequiresDeviceIdle 设置作业是否在设备空闲时才会被执行
         builder.setRequiresDeviceIdle(mRequiresIdleCheckbox.isChecked());
+
+        // setRequiresCharging 设置作业是否在设备充电时才会被执行
         builder.setRequiresCharging(mRequiresChargingCheckBox.isChecked());
 
-        // Extras, work duration.
+        // Extras, work duration.  设置额外参数（作业工作时间）
         PersistableBundle extras = new PersistableBundle();
         String workDuration = mDurationTimeEditText.getText().toString();
         if (TextUtils.isEmpty(workDuration)) {
@@ -154,11 +167,14 @@ public class MainActivity extends Activity {
         // Schedule job
         Log.d(TAG, "Scheduling job");
         JobScheduler tm = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+
+        // 运行作业 return 1 成功，0 失败
         tm.schedule(builder.build());
     }
 
     /**
      * Executed when user clicks on CANCEL ALL.
+     * 取消所有作业
      */
     public void cancelAllJobs(View v) {
         JobScheduler tm = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
@@ -168,6 +184,8 @@ public class MainActivity extends Activity {
 
     /**
      * Executed when user clicks on FINISH LAST TASK.
+     *
+     * 结束最新作业
      */
     public void finishJob(View v) {
         JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
@@ -194,6 +212,7 @@ public class MainActivity extends Activity {
     private static class IncomingMessageHandler extends Handler {
 
         // Prevent possible leaks with a weak reference.
+        // 弱引用，防止内存泄漏
         private WeakReference<MainActivity> mActivity;
 
         IncomingMessageHandler(MainActivity activity) {
