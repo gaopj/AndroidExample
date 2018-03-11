@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     // We are playing the video now. In PiP mode, we want to show an action item to
                     // pause
                     // the video.
+                    // 在pip模式下，展示暂停按钮。
                     updatePictureInPictureActions(
                             R.drawable.ic_pause_24dp, mPause, CONTROL_TYPE_PAUSE, REQUEST_PAUSE);
                 }
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Update the state of pause/resume action item in Picture-in-Picture mode.
-     *
+     * 在画中画模式更新暂停/恢复操作项目的状态。
      * @param iconId The icon to be used.
      * @param title The title text.
      * @param controlType The type of the action. either {@link #CONTROL_TYPE_PLAY} or {@link
@@ -134,6 +135,10 @@ public class MainActivity extends AppCompatActivity {
         // This is the PendingIntent that is invoked when a user clicks on the action item.
         // You need to use distinct request codes for play and pause, or the PendingIntent won't
         // be properly updated.
+
+        // 这是用户单击操作项时调用的PendingIntent。
+        // 您需要使用不同的请求代码进行播放和暂停，否则PendingIntent将无法正确更新。
+        // intent用于在画中画中的按钮被点击时发送该intent 从而能使对应的事件接收器接受到并处理
         final PendingIntent intent =
                 PendingIntent.getBroadcast(
                         MainActivity.this,
@@ -144,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
         actions.add(new RemoteAction(icon, title, title, intent));
 
         // Another action item. This is a fixed action.
+        // 另一个行为意图，这是一个写死的意图
         actions.add(
                 new RemoteAction(
                         Icon.createWithResource(MainActivity.this, R.drawable.ic_info_24dp),
@@ -162,6 +168,10 @@ public class MainActivity extends AppCompatActivity {
         // This is how you can update action items (or aspect ratio) for Picture-in-Picture mode.
         // Note this call can happen even when the app is not in PiP mode. In that case, the
         // arguments will be used for at the next call of #enterPictureInPictureMode.
+        // 这是您如何更新画中画模式下的动作项目（或宽高比）。
+        // 注意，即使应用程序不处于PiP模式，也可能发生此调用。 在那种情况下，
+        // 参数将在下次调用#enterPictureInPictureMode时使用。
+        // 画中画中只会显示MediaPlayer 中内容。
         setPictureInPictureParams(mPictureInPictureParamsBuilder.build());
     }
 
@@ -218,12 +228,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // 新增了一个onPictureInPictureModeChanged，在画中画模式下可以隐藏某些UI。
     @Override
     public void onPictureInPictureModeChanged(
             boolean isInPictureInPictureMode, Configuration configuration) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, configuration);
         if (isInPictureInPictureMode) {
             // Starts receiving events from action items in PiP mode.
+            // 在画中画模式下 注册事件监听器，监听画中画里面的点击事件
             mReceiver =
                     new BroadcastReceiver() {
                         @Override
@@ -235,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
 
                             // This is where we are called back from Picture-in-Picture action
                             // items.
+                            // 根据不同的intent 进行不同回调处理
                             final int controlType = intent.getIntExtra(EXTRA_CONTROL_TYPE, 0);
                             switch (controlType) {
                                 case CONTROL_TYPE_PLAY:
@@ -249,9 +262,11 @@ public class MainActivity extends AppCompatActivity {
             registerReceiver(mReceiver, new IntentFilter(ACTION_MEDIA_CONTROL));
         } else {
             // We are out of PiP mode. We can stop receiving events from it.
+            // 当退出画中画模式，我们可以注销掉事件接收器
             unregisterReceiver(mReceiver);
             mReceiver = null;
             // Show the video controls if the video is not playing
+            // 展示视频控制器，如果视频正在播放
             if (mMovieView != null && !mMovieView.isPlaying()) {
                 mMovieView.showControls();
             }
@@ -264,16 +279,20 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         // Hide the controls in picture-in-picture mode.
+        // 在画中画模式下 隐藏控制版面。
         mMovieView.hideControls();
         // Calculate the aspect ratio of the PiP screen.
+        // 计算画中画屏幕的宽高比。
         Rational aspectRatio = new Rational(mMovieView.getWidth(), mMovieView.getHeight());
         mPictureInPictureParamsBuilder.setAspectRatio(aspectRatio).build();
+
+        // 调用这行代码主动进入画中画模式。
         enterPictureInPictureMode(mPictureInPictureParamsBuilder.build());
     }
 
     /**
      * Adjusts immersive full-screen flags depending on the screen orientation.
-     *
+     * 根据屏幕方向调整沉浸式全屏。就是整个显示屏 都是被视频占满
      * @param config The current {@link Configuration}.
      */
     private void adjustFullScreen(Configuration config) {

@@ -25,11 +25,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!--
+        configChanges   切屏不会重新调用各个生命周期，只会执行onConfigurationChanged方法
+         screenLayout 屏幕的显示发生了变化,不同的显示被激活
+         orientation 屏幕方向改变了
+         screenSize 屏幕大小改变了
+         smallestScreenSize 屏幕的物理大小改变了，如：连接到一个外部的屏幕上
+         -->
         <activity
             android:name=".MainActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:supportsPictureInPicture="true">
             <intent-filter>
+
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>

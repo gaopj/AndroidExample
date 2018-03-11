@@ -35,6 +35,7 @@ import com.example.android.pictureinpicture.widget.MovieView;
 /**
  * Demonstrates usage of Picture-in-Picture when using {@link
  * android.support.v4.media.session.MediaSessionCompat}.
+ * 通过MediaSessionCompat 框架来控制视频的相关逻辑与通信
  */
 public class MediaSessionPlaybackActivity extends AppCompatActivity {
 
@@ -53,6 +54,7 @@ public class MediaSessionPlaybackActivity extends AppCompatActivity {
     private MediaSessionCompat mSession;
 
     /** The arguments to be used for Picture-in-Picture mode. */
+    // 要用于画中画模式的参数
     private final PictureInPictureParams.Builder mPictureInPictureParamsBuilder =
             new PictureInPictureParams.Builder();
 
@@ -83,6 +85,7 @@ public class MediaSessionPlaybackActivity extends AppCompatActivity {
                     // We are playing the video now. Update the media session state and the PiP
                     // window will
                     // update the actions.
+                    // 我们正在播放视频。更新媒体会话状态，PIP窗口将更新操作。
                     updatePlaybackState(
                             PlaybackStateCompat.STATE_PLAYING,
                             mMovieView.getCurrentPosition(),
@@ -94,6 +97,7 @@ public class MediaSessionPlaybackActivity extends AppCompatActivity {
                     // The video stopped or reached its end. Update the media session state and the
                     // PiP window will
                     // update the actions.
+                    // 视频停止或到达终点。更新媒体会话状态，PIP窗口将更新操作。
                     updatePlaybackState(
                             PlaybackStateCompat.STATE_PAUSED,
                             mMovieView.getCurrentPosition(),
@@ -131,6 +135,7 @@ public class MediaSessionPlaybackActivity extends AppCompatActivity {
     }
 
     private void initializeMediaSession() {
+        // 创建受控端
         mSession = new MediaSessionCompat(this, TAG);
         mSession.setFlags(
                 MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
@@ -241,10 +246,14 @@ public class MediaSessionPlaybackActivity extends AppCompatActivity {
 
     /**
      * Overloaded method that persists previously set media actions.
+     * 重载方法 ：继续以前设置的媒体操作。
      *
      * @param state The state of the video, e.g. playing, paused, etc.
+     *              录像的状态，如播放、暂停等。
      * @param position The position of playback in the video.
+     *                 在视频中播放的位置。
      * @param mediaId The media id related to the video in the media session.
+     *                与媒体会话中的视频相关的媒体ID。
      */
     private void updatePlaybackState(
             @PlaybackStateCompat.State int state, int position, int mediaId) {
@@ -266,6 +275,7 @@ public class MediaSessionPlaybackActivity extends AppCompatActivity {
      * Updates the {@link MovieView} based on the callback actions. <br>
      * Simulates a playlist that will disable actions when you cannot skip through the playlist in a
      * certain direction.
+     * 模拟播放列表，当您不能跳过播放列表某个方向时将禁用操作。
      */
     private class MediaSessionCallback extends MediaSessionCompat.Callback {
 
