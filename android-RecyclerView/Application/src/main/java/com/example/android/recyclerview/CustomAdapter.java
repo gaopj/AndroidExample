@@ -16,16 +16,18 @@
 
 package com.example.android.recyclerview;
 
-import com.example.android.common.logger.Log;
-
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.common.logger.Log;
+
 /**
  * Provide views to RecyclerView with data from mDataSet.
+ * layout manager用于确定RecyclerView中Item的展示方式以及决定何时复用已经不可见的Item，
+ * 避免重复创建以及执行高成本的
  */
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
     private static final String TAG = "CustomAdapter";
@@ -42,6 +44,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         public ViewHolder(View v) {
             super(v);
             // Define click listener for the ViewHolder's View.
+            // 对ViewHolder设置点击监听事件
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -59,7 +62,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     /**
      * Initialize the dataset of the Adapter.
-     *
+     * 初始化数据
      * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
      */
     public CustomAdapter(String[] dataSet) {
@@ -68,24 +71,29 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     // BEGIN_INCLUDE(recyclerViewOnCreateViewHolder)
     // Create new views (invoked by the layout manager)
+    // 创建新的views 被layout manager 调用
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view.
+        // 创建一个新的item view
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.text_row_item, viewGroup, false);
 
+        // 将创建的view 传入ViewHolder中
         return new ViewHolder(v);
     }
     // END_INCLUDE(recyclerViewOnCreateViewHolder)
 
     // BEGIN_INCLUDE(recyclerViewOnBindViewHolder)
     // Replace the contents of a view (invoked by the layout manager)
+    // 替换view 内容
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         Log.d(TAG, "Element " + position + " set.");
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
+        // 从mDataSet数据集中获取元素，并用该元素替换视图的内容
         viewHolder.getTextView().setText(mDataSet[position]);
     }
     // END_INCLUDE(recyclerViewOnBindViewHolder)

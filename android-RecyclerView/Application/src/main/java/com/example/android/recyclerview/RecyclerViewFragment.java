@@ -58,6 +58,7 @@ public class RecyclerViewFragment extends Fragment {
 
         // Initialize dataset, this data would usually come from a local content provider or
         // remote server.
+        // 初始化数据集，这些数据通常来自本地内容提供者或远程服务器。
         initDataset();
     }
 
@@ -73,12 +74,14 @@ public class RecyclerViewFragment extends Fragment {
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
         // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
         // elements are laid out.
+        // mLayoutManager决定元素如何排列
         mLayoutManager = new LinearLayoutManager(getActivity());
 
         mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
 
         if (savedInstanceState != null) {
             // Restore saved layout manager type.
+            // 恢复存储的排列状态
             mCurrentLayoutManagerType = (LayoutManagerType) savedInstanceState
                     .getSerializable(KEY_LAYOUT_MANAGER);
         }
@@ -86,6 +89,7 @@ public class RecyclerViewFragment extends Fragment {
 
         mAdapter = new CustomAdapter(mDataset);
         // Set CustomAdapter as the adapter for RecyclerView.
+        // 将自定义适配器按入mRecyclerView中
         mRecyclerView.setAdapter(mAdapter);
         // END_INCLUDE(initializeRecyclerView)
 
@@ -110,13 +114,14 @@ public class RecyclerViewFragment extends Fragment {
 
     /**
      * Set RecyclerView's LayoutManager to the one given.
-     *
+     * 设置布局模式
      * @param layoutManagerType Type of layout manager to switch to.
      */
     public void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
         int scrollPosition = 0;
 
         // If a layout manager has already been set, get current scroll position.
+        // 如果已经设置了布局管理器，获取当前滚动位置
         if (mRecyclerView.getLayoutManager() != null) {
             scrollPosition = ((LinearLayoutManager) mRecyclerView.getLayoutManager())
                     .findFirstCompletelyVisibleItemPosition();
