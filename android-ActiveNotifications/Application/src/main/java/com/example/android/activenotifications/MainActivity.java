@@ -49,6 +49,7 @@ public class MainActivity extends SampleActivityBase {
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
+            // 将ActiveNotificationsFragment亚茹压入sample_content_fragment中
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             ActiveNotificationsFragment fragment = new ActiveNotificationsFragment();
             transaction.replace(R.id.sample_content_fragment, fragment);

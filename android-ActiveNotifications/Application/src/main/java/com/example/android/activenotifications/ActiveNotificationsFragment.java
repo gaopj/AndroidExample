@@ -33,12 +33,14 @@ import com.example.android.common.logger.Log;
 
 /**
  * A fragment that allows notifications to be enqueued.
+ * 一个允许notifications入队的fragment
  */
 public class ActiveNotificationsFragment extends Fragment {
 
     /**
      * The request code can be any number as long as it doesn't match another request code used
      * in the same app.
+     * REQUEST_CODE 只要不重复都行
      */
     private static final int REQUEST_CODE = 2323;
 
@@ -55,6 +57,8 @@ public class ActiveNotificationsFragment extends Fragment {
 
     // Every notification needs a unique ID otherwise the previous one would be overwritten. This
     // variable is incremented when used.
+    // 每个通知都需要一个唯一的ID，否则前一个会被覆盖。
+    // 这个变量在使用时递增。
     private static int sNotificationId = NOTIFICATION_GROUP_SUMMARY_ID + 1;
 
     private PendingIntent mDeletePendingIntent;
@@ -152,6 +156,8 @@ public class ActiveNotificationsFragment extends Fragment {
     /**
      * Requests the current number of notifications from the {@link NotificationManager} and
      * display them to the user.
+     * 请求来自{@link NotificationManager}，当前通知数量并将其显示给用户。
+
      */
     protected void updateNumberOfNotifications() {
         final int numberOfNotifications = getNumberOfNotifications();
@@ -169,6 +175,8 @@ public class ActiveNotificationsFragment extends Fragment {
         // Unlikely in the sample, but the int will overflow if used enough so we skip the summary
         // ID. Most apps will prefer a more deterministic way of identifying an ID such as hashing
         // the content of the notification.
+        // 在本例中不太可能，但是如果使用足够的话，int会溢出，所以我们跳过摘要ID。
+        // 大多数应用程序会选择更确定的方式来识别ID，例如哈希通知的内容。
         if (notificationId == NOTIFICATION_GROUP_SUMMARY_ID) {
             notificationId = sNotificationId++;
         }
@@ -178,12 +186,14 @@ public class ActiveNotificationsFragment extends Fragment {
     private int getNumberOfNotifications() {
         // [BEGIN get_active_notifications]
         // Query the currently displayed notifications.
+        // 查询当前显示的通知。
         final StatusBarNotification[] activeNotifications = mNotificationManager
                 .getActiveNotifications();
         // [END get_active_notifications]
 
         // Since the notifications might include a summary notification remove it from the count if
         // it is present.
+        // 由于通知可能包含摘要通知，因此如果它存在，请将其从计数中删除。
         for (StatusBarNotification notification : activeNotifications) {
             if (notification.getId() == NOTIFICATION_GROUP_SUMMARY_ID) {
                 return activeNotifications.length - 1;

@@ -36,6 +36,7 @@ public class ActiveNotificationsActivity extends MainActivity {
             if (mFragment == null) {
                 findFragment();
             }
+            // 更新mFragment中的通知数量
             mFragment.updateNumberOfNotifications();
         }
     };
@@ -55,12 +56,14 @@ public class ActiveNotificationsActivity extends MainActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // 注册广播接听器，当收到ACTION_NOTIFICATION_DELETE的广播时执行onReceive
         registerReceiver(mDeleteReceiver, new IntentFilter(ACTION_NOTIFICATION_DELETE));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        // 反注册广播
         unregisterReceiver(mDeleteReceiver);
     }
 }
