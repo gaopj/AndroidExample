@@ -44,8 +44,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void setProductList(final List<? extends Product> productList) {
         if (mProductList == null) {
             mProductList = productList;
+
+            // 插入元素并通知UI
             notifyItemRangeInserted(0, productList.size());
         } else {
+            // 它用来比较两个数据集，寻找出旧数据集-》新数据集的最小变化量。
             DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
                 @Override
                 public int getOldListSize() {
@@ -90,6 +93,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
         holder.binding.setProduct(mProductList.get(position));
+
+        //当绑定的数据修改时更新视图。这必须在UI线程上运行。
         holder.binding.executePendingBindings();
     }
 

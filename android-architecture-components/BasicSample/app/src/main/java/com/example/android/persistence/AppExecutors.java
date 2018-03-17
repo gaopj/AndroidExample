@@ -25,9 +25,11 @@ import java.util.concurrent.Executors;
 
 /**
  * Global executor pools for the whole application.
+ * 整个应用程序的全局执行池。
  * <p>
  * Grouping tasks like this avoids the effects of task starvation (e.g. disk reads don't wait behind
  * webservice requests).
+ * 这样的分组任务避免了任务饥饿的影响（例如磁盘读取不在后面等待WebService请求）。
  */
 public class AppExecutors {
 
@@ -60,6 +62,7 @@ public class AppExecutors {
         return mMainThread;
     }
 
+    // 主线程中事件交给Handler 处理
     private static class MainThreadExecutor implements Executor {
         private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 

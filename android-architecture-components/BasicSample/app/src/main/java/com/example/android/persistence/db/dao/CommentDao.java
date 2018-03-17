@@ -26,6 +26,8 @@ import com.example.android.persistence.db.entity.CommentEntity;
 
 import java.util.List;
 
+// Data Access Objects
+// DAO抽象出了一种操作数据库的简便方法。
 @Dao
 public interface CommentDao {
     @Query("SELECT * FROM comments where productId = :productId")

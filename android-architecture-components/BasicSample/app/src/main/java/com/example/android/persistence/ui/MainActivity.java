@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
 
         // Add product list fragment if this is first creation
+        // 如果这是第一次创建，请添加产品列表片段
         if (savedInstanceState == null) {
             ProductListFragment fragment = new ProductListFragment();
 

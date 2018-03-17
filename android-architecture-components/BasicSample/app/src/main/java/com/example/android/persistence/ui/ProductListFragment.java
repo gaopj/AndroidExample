@@ -46,7 +46,8 @@ public class ProductListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
+        // Android官方数据绑定框架DataBinding
         mBinding = DataBindingUtil.inflate(inflater, R.layout.list_fragment, container, false);
 
         mProductAdapter = new ProductAdapter(mProductClickCallback);
@@ -66,6 +67,9 @@ public class ProductListFragment extends Fragment {
 
     private void subscribeUi(ProductListViewModel viewModel) {
         // Update the list when the data changes
+        // 更新数据更改时的列表
+
+        // 注册对Products的观察
         viewModel.getProducts().observe(this, new Observer<List<ProductEntity>>() {
             @Override
             public void onChanged(@Nullable List<ProductEntity> myProducts) {
@@ -77,6 +81,10 @@ public class ProductListFragment extends Fragment {
                 }
                 // espresso does not know how to wait for data binding's loop so we execute changes
                 // sync.
+
+                // espresso不知道如何等待数据绑定的循环，所以我们执行更改同步
+                // 就是调用这个executePendingBindings，当你的数据还无效的时候，数据绑定是等到下一个动画帧之前才设置布局。
+                // 这就让我们不可以一次性批量绑定完所有的数据内容，因为 RecyclerView 的机制并不是这样。
                 mBinding.executePendingBindings();
             }
         });

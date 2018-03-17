@@ -41,7 +41,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         mCommentClickCallback = commentClickCallback;
     }
 
-    public void setCommentList(final List<? extends Comment> comments) {
+    public void setCommentList( final List<? extends Comment> comments) {
         if (mCommentList == null) {
             mCommentList = comments;
             notifyItemRangeInserted(0, comments.size());

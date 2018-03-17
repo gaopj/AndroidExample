@@ -20,6 +20,8 @@ import android.arch.persistence.room.TypeConverter;
 
 import java.util.Date;
 
+// 上述示例定义了两个函数，一个将Date对象转换为Long对象，另一个将从Long到Date转换为执行逆转换。
+// 由于Room已经知道如何持久化Long对象，因此可以使用此转换器来持久保存Date类型的值。
 public class DateConverter {
     @TypeConverter
     public static Date toDate(Long timestamp) {

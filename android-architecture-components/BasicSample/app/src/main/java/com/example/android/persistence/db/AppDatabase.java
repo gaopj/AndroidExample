@@ -36,7 +36,16 @@ import com.example.android.persistence.db.entity.ProductEntity;
 
 import java.util.List;
 
+// Database:你可以用这个组件来创建一个database holder。
+// 注解定义实体的列表，类的内容定义从数据库中获取数据的对象（DAO）。
+// 它也是底层连接的主要入口。
+
+
 @Database(entities = {ProductEntity.class, CommentEntity.class}, version = 1)
+
+// 将@TypeConverters注释添加到AppDatabase类，
+// 以便Room可以使用你为该AppDatabase中的每个实体和DAO定义的转换器
+// 使用这些转换器，可以在其他查询中使用自定义类型，就像使用原始类型一样
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -51,6 +60,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private final MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
 
+    // 获取数据库
     public static AppDatabase getInstance(final Context context, final AppExecutors executors) {
         if (sInstance == null) {
             synchronized (AppDatabase.class) {
@@ -67,6 +77,9 @@ public abstract class AppDatabase extends RoomDatabase {
      * Build the database. {@link Builder#build()} only sets up the database configuration and
      * creates a new instance of the database.
      * The SQLite database is only created when it's accessed for the first time.
+     *
+     * 建立数据库。只有设置数据库配置和创建数据库的一个新实例。
+     * SQLite数据库是创建时它的首次访问。
      */
     private static AppDatabase buildDatabase(final Context appContext,
             final AppExecutors executors) {
@@ -77,8 +90,11 @@ public abstract class AppDatabase extends RoomDatabase {
                         super.onCreate(db);
                         executors.diskIO().execute(() -> {
                             // Add a delay to simulate a long-running operation
+                            // 添加延迟以模拟长时间运行的操作
                             addDelay();
+
                             // Generate the data for pre-population
+                            // 生成预人口数据
                             AppDatabase database = AppDatabase.getInstance(appContext, executors);
                             List<ProductEntity> products = DataGenerator.generateProducts();
                             List<CommentEntity> comments =
@@ -86,6 +102,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
                             insertData(database, products, comments);
                             // notify that the database was created and it's ready to be used
+                            // 通知已创建数据库并准备使用
                             database.setDatabaseCreated();
                         });
                     }
@@ -107,6 +124,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static void insertData(final AppDatabase database, final List<ProductEntity> products,
             final List<CommentEntity> comments) {
+
+        // 执行指定数据库事务。
+        // 该交易将被标记为成功，除非抛出异常。
         database.runInTransaction(() -> {
             database.productDao().insertAll(products);
             database.commentDao().insertAll(comments);

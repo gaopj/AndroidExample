@@ -25,12 +25,19 @@ import com.example.android.persistence.model.Comment;
 
 import java.util.Date;
 
+//当一个类用@Entity注解并且被@Database注解中的entities属性所引用，
+// Room就会在数据库中为那个entity创建一张表。
+
+// 默认Room会为entity中定义的每一个field都创建一个column。
+// 如果一个entity中有你不想持久化的field，那么你可以使用@Ignore来注释它们
 @Entity(tableName = "comments",
         foreignKeys = {
+        // 建外键
                 @ForeignKey(entity = ProductEntity.class,
                         parentColumns = "id",
                         childColumns = "productId",
                         onDelete = ForeignKey.CASCADE)},
+        // 建索引
         indices = {@Index(value = "productId")
         })
 public class CommentEntity implements Comment {
