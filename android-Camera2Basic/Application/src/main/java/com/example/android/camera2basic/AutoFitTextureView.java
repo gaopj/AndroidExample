@@ -22,6 +22,7 @@ import android.view.TextureView;
 
 /**
  * A {@link TextureView} that can be adjusted to a specified aspect ratio.
+ * 可以调整到指定的宽高比的TextureView。
  */
 public class AutoFitTextureView extends TextureView {
 
@@ -44,6 +45,9 @@ public class AutoFitTextureView extends TextureView {
      * Sets the aspect ratio for this view. The size of the view will be measured based on the ratio
      * calculated from the parameters. Note that the actual sizes of parameters don't matter, that
      * is, calling setAspectRatio(2, 3) and setAspectRatio(4, 6) make the same result.
+     *
+     * 设置此视图的宽高比。 视图的大小将根据参数计算的比率进行测量。
+     * 请注意参数的实际大小并不重要，也就是说，调用setAspectRatio（2,3）和setAspectRatio（4,6）会得到相同的结果。
      *
      * @param width  Relative horizontal size
      * @param height Relative vertical size
